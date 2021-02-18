@@ -1,0 +1,52 @@
+{
+  "parser": "babel-eslint",
+  "plugins": [
+    "import",
+    "jest"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 2017,
+    "sourceType": "module"
+  },
+  "env": {
+    "node": true,
+    "jest": true,
+    "es6": true
+  },
+  "extends": [
+    "airbnb-base"
+  ],
+  "rules": {
+    "jest/no-focused-tests": 2,
+    "jest/no-identical-title": 2,
+    "no-console": "off",
+    "global-require": "off",
+    "import/no-named-as-default": "off",
+    "class-methods-use-this": ["off"],
+    "import/prefer-default-export": "off",
+    "no-underscore-dangle": "off",
+    "no-param-reassign": "off",
+    "no-await-in-loop": ["off"],
+    "no-throw-literal": "off",
+    "no-plusplus": "off",
+    "max-len":"off",
+    "consistent-return":"off",
+    "no-trailing-spaces": ["off"],
+    "keyword-spacing":"off",
+    "object-curly-spacing":"off",
+    "space-infix-ops": ["off"],
+    "arrow-body-style": "off",
+    "dot-notation": ["off"],
+    "prefer-template": ["off"],
+    "no-prototype-builtins":"off",
+    "no-return-await": "off",
+    "spaced-comment":"off",
+    "lines-between-class-members": "off",
+    "function-paren-newline":"off",
+    "comma-dangle":"off",
+    "padded-blocks": ["off"],
+    "prefer-destructuring": "off",
+    "arrow-parens": "off",
+    "object-curly-newline": "off"
+  }
+}

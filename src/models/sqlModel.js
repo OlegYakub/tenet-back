@@ -1,9 +1,8 @@
 import connection from '../db/connection';
-import {QueryOptions} from 'mysql';
 
 export default class SqlModel {
 
-  async query(query: string, params: string[]) {
+  async query(query, params) {
     return connection.query(query, params);
   }
 }

@@ -8,7 +8,6 @@ const mySQLConfig = {
 };
 
 class Connection {
-  pool: any;
 
   init() {
     this.pool = mysql.createPool(mySQLConfig);
@@ -20,7 +19,7 @@ class Connection {
     // });
   }
 
-  async query(query: string, params: string[]) {
+  async query(query, params) {
     try {
       const r = await this.pool.query(query, params);
       // console.log('r', r[0]);

@@ -1,15 +1,14 @@
-import {Response} from 'express';
 
 class Api {
   get uri() {
     return '/api/v1'
   }
 
-  composeUri(url: string): string {
+  composeUri(url) {
     return `${this.uri}${url}`
   }
 
-  sendError(res: Response, status: number, message: string) {
+  sendError(res, status, message) {
     res.status(status).json({status, message})
   }
 }
