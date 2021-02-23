@@ -2,23 +2,32 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import passport from 'passport';
 import {Strategy as LocalStrategy} from 'passport-local';
-import UserModel from '../models/userModel';
-import connection from '../db/connection';
 import {JWT_SECRET} from '../constants';
 import api from '../service/api';
+import User from '../models/userModel';
+import Image from '../models/imageModel';
+
 
 class UserController {
 
   static async signUp(req, res) {
     try {
-      const {user} = req.body;
+      const userData = req.body.user;
 
-      user.password = await bcrypt.hash(user.password, 12);
-      let sql = 'INSERT INTO users SET ?';
+      userData.password = await bcrypt.hash(userData.password, 12);
 
-      await connection.query(sql, [user]);
-      res.json(user);
+      const oldUser = await User.findOne({where: {email: userData.email}});
+      if (oldUser) {
+        api.sendError(res, 404,  'User with this email already exist');
+        return null;
+      }
+
+      await User.create(userData);
+
+      res.json({message: 'success'});
     } catch (e) {
+      console.log('e', e);
+
       api.sendError(res, 404,  e.message);
     }
   }
@@ -36,25 +45,43 @@ class UserController {
         return null;
       }
 
-      delete user.password;
-      const token = UserController.generateToken(user);
+      const token = UserController._generateToken(user);
 
-      res.json({token, user});
+      user.update({
+        isAuthorized: true
+      });
+
+      const jsonUser = user.toJSON();
+
+      delete jsonUser.password;
+
+      res.json({token, user: jsonUser});
     })(req, res, next);
   }
 
   static async getUser(req, res) {
     try {
       const {email} = req.query;
-      console.log('email', email);
 
-      const user = await UserModel.findOneByEmail(email);
-      // const user = await userModel.findOneBy('id', '13');
+      const user = await User.scope('withoutPassword').findOne({where: {email}});
+      const userImage = await Image.findOne({where: {id: user.imageId}});
+
       if (user) {
-        res.json(user)
+        res.json({user})
       } else {
         res.status(404).json({code: 404, massage: 'User is not found'})
       }
+    } catch (err) {
+      console.log('err', err);
+
+      res.status(500).send(err);
+    }
+  }
+
+  static async updateUser(req, res) {
+    try {
+      req.user.update(req.body);
+      res.json({message: 'OK'});
     } catch (err) {
       res.status(500).send(err);
     }
@@ -65,7 +92,7 @@ class UserController {
       {usernameField: 'email'},
       async (email, password, done) => {
         try {
-          const user = await UserModel.findOneByEmail(email, false);
+          const user = await User.findOne({where: {email}});
 
           if (!user) {
             return done({
@@ -73,13 +100,14 @@ class UserController {
               massage: 'Email or password is worng'
             }, false);
           }
-          const correctPassword = await UserModel.verifyPassword(password, user?.password);
+          const correctPassword = await UserController._verifyPassword(password, user?.password);
           if (!correctPassword) {
             return done({
               code: 404,
               massage: 'Email or password is worng'
             }, false);
           }
+
           return done(null, user);
         } catch (e) {
           return done(e);
@@ -88,12 +116,19 @@ class UserController {
     );
   }
 
-  static generateToken(user) {
+  static _generateToken(user) {
     const payload = {
       userId: user.id
     };
 
     return jwt.sign(payload, JWT_SECRET, {expiresIn: '14d'})
+  }
+
+  static _verifyPassword(password, passwordHash)  {
+    if (!password || !passwordHash) {
+      return false;
+    }
+    return bcrypt.compare(password, passwordHash)
   }
 }
 

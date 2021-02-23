@@ -1,9 +1,18 @@
-import TableModel from './tableModel';
+import { DataTypes } from 'sequelize';
+import connection from '../db/connection';
 
-class ImageModel extends TableModel {
-  constructor() {
-    super('user')
+const Image = connection.sequelize.define('Image', {
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true
+  },
+  path: {
+    type: DataTypes.STRING
   }
-}
-const imageModel = new ImageModel();
-export default imageModel;
+}, {
+  timestamps: false
+});
+
+export default Image;
+

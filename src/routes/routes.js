@@ -2,7 +2,7 @@
 import api from '../service/api';
 import checkJwt from '../middleware/checkJwt';
 import {imageUploadMiddleware} from '../middleware/uploadMiddleware';
-import userController from '../controllers/userController';
+import UserController from '../controllers/userController';
 import imageController from '../controllers/imageController';
 
 export default function configure(app) {
@@ -31,15 +31,22 @@ export default function configure(app) {
     // })
   });
 
-  app.get(api.composeUri('/get-user'), checkJwt, userController.getUser);
-  app.post(api.composeUri('/sign-up'), userController.signUp);
-  app.get(api.composeUri('/login'), userController.login);
+
+  app.post(api.composeUri('/sign-up'), UserController.signUp);
+  app.get(api.composeUri('/login'), UserController.login);
   app.post(
     api.composeUri('/upload/image'),
     checkJwt,
     imageUploadMiddleware.single('image'),
     imageController.upload
   );
+
+  app.get(api.composeUri('/get-user'), checkJwt, UserController.getUser);
+  app.post(
+    api.composeUri('/update-user'),
+    checkJwt,
+    UserController.updateUser
+  )
 
   // app.post()
 };

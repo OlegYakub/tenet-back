@@ -12,13 +12,8 @@ const port = 3001;
 class App {
   constructor() {
     this.app = express();
-    this.init();
 
-  }
-
-  init() {
-    connection.init();
-
+    connection.checkConnection();
     this.app.use(bodyParser.json());
     this.app.use(corsMiddleware);
 
@@ -29,6 +24,7 @@ class App {
     passport.use(UserController.getLocalStrategy());
 
     configureRoutes(this.app);
+
   }
 }
 

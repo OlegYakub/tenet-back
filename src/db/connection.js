@@ -1,4 +1,4 @@
-import mysql from 'mysql2/promise';
+import { Sequelize } from 'sequelize';
 
 const mySQLConfig = {
   host: 'localhost',
@@ -8,29 +8,30 @@ const mySQLConfig = {
 };
 
 class Connection {
-
-  init() {
-    this.pool = mysql.createPool(mySQLConfig);
-    // this.pool.connect(err => {
-    //   if (err) {
-    //     throw err;
-    //   };
-    //   console.log("Connected!");
-    // });
+  constructor() {
+    this.sequelize = new Sequelize(
+      mySQLConfig.database,
+      mySQLConfig.user,
+      '',
+      {
+        dialect: 'mysql',
+        // dialectOptions: {
+        //   // Your mysql2 options here
+        // }
+      });
   }
 
-  async query(query, params) {
+  async checkConnection() {
     try {
-      const r = await this.pool.query(query, params);
-      // console.log('r', r[0]);
+      await this.sequelize.authenticate();
+      console.log('Connection has been established successfully.');
+      console.log('Models: ', this.sequelize.models);
 
-      return r[0];
     } catch (error) {
-      console.log('error', error);
-
-      throw error;
+      console.error('Unable to connect to the database:', error);
     }
   }
 }
+const connection = new Connection();
+export default connection;
 
-export default new Connection();
