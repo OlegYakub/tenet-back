@@ -7,27 +7,24 @@ import UserController from './controllers/userController';
 import configureRoutes from './routes/routes';
 import api from './service/api';
 
-const port = 3001;
+const PORT = 3001;
+const app = express();
 
-class App {
-  constructor() {
-    this.app = express();
+app.use(bodyParser.json());
+app.use(corsMiddleware);
+app.use(api.composeUri('public'), express.static('public'));
+app.use(passport.initialize());
+passport.use(UserController.getLocalStrategy());
 
-    connection.checkConnection();
-    this.app.use(bodyParser.json());
-    this.app.use(corsMiddleware);
+configureRoutes(app);
 
-    this.app.use(api.composeUri('public'), express.static('public'));
-
-
-    this.app.use(passport.initialize());
-    passport.use(UserController.getLocalStrategy());
-
-    configureRoutes(this.app);
-
-  }
+const start = async () => {
+    try {
+        await connection.checkConnection()
+        app.listen(PORT, () => console.log(`Server started on port ${PORT}`))
+    } catch (e) {
+        console.log(e)
+    }
 }
 
-const app = new App();
-
-app.app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`));
+start();

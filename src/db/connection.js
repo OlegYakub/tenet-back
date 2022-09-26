@@ -3,7 +3,7 @@ import { Sequelize } from 'sequelize';
 const mySQLConfig = {
   host: 'localhost',
   user: 'root',
-  // password: '12345678',
+  password: '12345678',
   database: 'nodemysql'
 };
 
@@ -15,15 +15,13 @@ class Connection {
       '',
       {
         dialect: 'mysql',
-        // dialectOptions: {
-        //   // Your mysql2 options here
-        // }
       });
   }
 
   async checkConnection() {
     try {
       await this.sequelize.authenticate();
+      await this.sequelize.sync();
       console.log('Connection has been established successfully.');
       console.log('Models: ', this.sequelize.models);
 
