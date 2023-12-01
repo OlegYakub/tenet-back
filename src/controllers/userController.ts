@@ -12,7 +12,6 @@ class UserController {
 
   static async signUp(req: Request, res: Response) {
     try {
-
       const userData = req.body.user;
 
       userData.password = await bcrypt.hash(userData.password, 12);
