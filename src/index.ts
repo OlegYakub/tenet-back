@@ -20,7 +20,7 @@ configureRoutes(app);
 
 const start = async () => {
     try {
-        await connection.checkConnection()
+        await connection.checkConnection();
         app.listen(PORT, () => console.log(`Server started on port ${PORT}`))
     } catch (e) {
         console.log(e)

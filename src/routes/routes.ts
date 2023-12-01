@@ -1,3 +1,4 @@
+import { Express } from 'express';
 import connection from '../db/connection';
 import api from '../service/api';
 import checkJwt from '../middleware/checkJwt';
@@ -5,7 +6,7 @@ import {imageUploadMiddleware} from '../middleware/uploadMiddleware';
 import UserController from '../controllers/userController';
 import imageController from '../controllers/imageController';
 
-export default function configure(app) {
+export default function configure(app: Express) {
   app.get(api.composeUri('/'), (req, res) => {
     res.send('Hello World!')
   });
@@ -14,7 +15,7 @@ export default function configure(app) {
       await connection.sequelize.query('CREATE DATABASE nodemysql');
       res.send('Database created!')
     } catch (error) {
-      api.sendError(res, 500,  error);
+      api.sendError(res, 500,  '');
     }
   });
   app.get(api.composeUri('/create-user-table'), (req, res) => {

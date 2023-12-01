@@ -1,9 +1,11 @@
+import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
-import User from '../models/userModel';
+import { User } from '../models/user.model';
 import {JWT_SECRET} from '../constants';
 import api from '../service/api';
+import { JwtTokenData } from "../types/global.type";
 
-const checkJwt = async (req, res, next) => {
+const checkJwt = async (req: Request, res: Response, next: NextFunction) => {
 
   const authHeader = req.headers['authorization'];
   if (authHeader) {
@@ -12,7 +14,7 @@ const checkJwt = async (req, res, next) => {
       if (!token) return api.sendError(res, 404,  'INVALID TOKEN');
 
 
-      const userFromToken = jwt.verify(token, JWT_SECRET);
+      const userFromToken = jwt.verify(token, JWT_SECRET) as JwtTokenData;
 
       if (!userFromToken.userId) return api.sendError(res, 404,  'INVALID TOKEN');
 
@@ -21,8 +23,6 @@ const checkJwt = async (req, res, next) => {
           id: userFromToken.userId
         }
       });
-
-      console.log('user', user);
 
       if (!user) return api.sendError(res, 404,  'INVALID TOKEN');
 
