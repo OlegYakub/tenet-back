@@ -27,14 +27,6 @@ class UserController {
         await newUser.$set('images', [userData.photo_id])
       }
 
-
-      // if (userData.photo_id) {
-      //   await UserImage.create({
-      //     user_id: newUser.id,
-      //     image_id: userData.photo_id
-      //   });
-      // };
-
       res.json({message: 'success', newUser});
     } catch (e: any) {
       api.sendError(res, 404,  e.message);

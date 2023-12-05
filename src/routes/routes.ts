@@ -1,10 +1,11 @@
-import { Express } from 'express';
+import { Express, Request, Response } from 'express';
 import connection from '../db/connection';
 import api from '../service/api';
 import checkJwt from '../middleware/checkJwt';
 import {imageUploadMiddleware} from '../middleware/uploadMiddleware';
 import UserController from '../controllers/userController';
 import imageController from '../controllers/imageController';
+import { uploadToS3Middleware } from "../middleware/uploadToS3Middleware";
 
 export default function configure(app: Express) {
   app.get(api.composeUri('/'), (req, res) => {
@@ -28,7 +29,8 @@ export default function configure(app: Express) {
   app.post(
     api.composeUri('/upload/image'),
     checkJwt,
-    imageUploadMiddleware.single('image'),
+    uploadToS3Middleware,
+    // imageUploadMiddleware.single('image'),
     imageController.upload
   );
 
