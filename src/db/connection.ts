@@ -7,7 +7,7 @@ import { UserImage } from "../models/userImage.model";
 console.log('MYSQL_DB', process.env.MYSQL_DB);
 console.log('MYSQL_USER', process.env.MYSQL_USER);
 console.log('MYSQL_PASSWORD', process.env.MYSQL_PASSWORD);
-console.log('MYSQL_HOST 2', process.env.MYSQL_HOST);
+console.log('MYSQL_HOST 3', process.env.MYSQL_HOST);
 
 class Connection {
   sequelize: Sequelize;
@@ -17,9 +17,8 @@ class Connection {
       dialect: 'mysql',
       password: process.env.MYSQL_PASSWORD,
       username: process.env.MYSQL_USER,
-      // host: process.env.MYSQL_HOST
-      host: '172.18.0.2'
-
+      host: process.env.MYSQL_HOST
+      // host: '172.18.0.2'
     })
 
   }
