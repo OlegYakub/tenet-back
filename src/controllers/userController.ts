@@ -66,7 +66,7 @@ class UserController {
 
   static async getUser(req: Request, res: Response) {
     try {
-      const {email} = req.query;
+      const email = req.query.email as string;
 
       // users with avatars
 //       const [user] = await connection.sequelize.query(

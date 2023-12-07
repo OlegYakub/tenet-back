@@ -4,22 +4,22 @@ import { Feed } from "../models/feed.model";
 import { Image } from "../models/image.model";
 import { UserImage } from "../models/userImage.model";
 
-const mySQLConfig = {
-  host: 'localhost',
-  user: 'root',
-  password: '12345678',
-  database: 'nodemysql'
-  // database: 'test1'
-};
+console.log('MYSQL_DB', process.env.MYSQL_DB);
+console.log('MYSQL_USER', process.env.MYSQL_USER);
+console.log('MYSQL_PASSWORD', process.env.MYSQL_PASSWORD);
+console.log('MYSQL_HOST 2', process.env.MYSQL_HOST);
 
 class Connection {
   sequelize: Sequelize;
   constructor() {
     this.sequelize = new Sequelize({
-      database: mySQLConfig.database,
+      database: process.env.MYSQL_DB,
       dialect: 'mysql',
-      password: '',
-      username: mySQLConfig.user,
+      password: process.env.MYSQL_PASSWORD,
+      username: process.env.MYSQL_USER,
+      // host: process.env.MYSQL_HOST
+      host: '172.18.0.2'
+
     })
 
   }

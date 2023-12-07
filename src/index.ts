@@ -8,15 +8,8 @@ import corsMiddleware from './middleware/corsMiddleware';
 import UserController from './controllers/userController';
 import configureRoutes from './routes/routes';
 import api from './service/api';
-// import AWS from 'aws-sdk';
 
-// AWS.config.update({
-//     accessKeyId: 'YOUR_ACCESS_KEY',
-//     secretAccessKey: 'YOUR_SECRET_ACCESS_KEY',
-//     region: 'YOUR_REGION',
-// });
-
-const PORT = 3001;
+const PORT = 3000;
 const app = express();
 
 app.use(bodyParser.json());
@@ -33,7 +26,7 @@ configureRoutes(app);
 const start = async () => {
     try {
         await connection.checkConnection();
-        app.listen(PORT, () => console.log(`Server started on port ${PORT}`))
+        app.listen(PORT, () => console.log(`Server started 1 on port ${PORT}`))
     } catch (e) {
         console.log(e)
     }
