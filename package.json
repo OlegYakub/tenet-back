@@ -4,7 +4,7 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "dev:local": "env-cmd -f .env nodemon src/index.ts",
+    "dev:local": "env-cmd -f .env.local nodemon src/index.ts",
     "dev": "nodemon src/index.ts",
     "start": "yarn build && env-cmd -f .env node dist/index.js",
     "clean": "rimraf dist",

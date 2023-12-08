@@ -1,0 +1,35 @@
+services:
+  app:
+    image: node:18-alpine
+    command: sh -c "yarn install && yarn run dev"
+    ports:
+      - 127.0.0.1:3000:3000
+    working_dir: /app
+    networks:
+      - tenet-app-network
+    volumes:
+      - ./:/app
+    environment:
+      MYSQL_HOST: ${MYSQL_HOST}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DB: ${MYSQL_DB}
+      S3_ACCESS_KEY: ${S3_ACCESS_KEY}
+      S3_SECRET_KEY: ${S3_SECRET_KEY}
+
+  mysql:
+    image: mysql:8.0
+    volumes:
+      - tenet-mysql-data:/var/lib/mysql
+    ports:
+      - 127.0.0.1:3306:3306
+    networks:
+      - tenet-app-network
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DB}
+
+networks:
+  tenet-app-network:
+volumes:
+  tenet-mysql-data:
