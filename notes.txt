@@ -1,5 +1,0 @@
-To get started:
-установить и запустить XAMPP. Из коробки идет phpmyadmin.
-Запустить localhost/phpmyadmin
-npm run dev - для разработки локально через nodemon
-
