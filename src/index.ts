@@ -9,7 +9,7 @@ import UserController from './controllers/userController';
 import configureRoutes from './routes/routes';
 import api from './service/api';
 
-const PORT = 80;
+const PORT = 3000;
 const app = express();
 
 app.use(bodyParser.json());
