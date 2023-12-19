@@ -64,6 +64,17 @@ class UserController {
     })(req, res, next);
   }
 
+  static async getUserByEmail(email: string) {
+    return User.scope('withoutPassword').findOne({
+      where: {email},
+      include: [{
+        // TODO remove any
+        model: Image as any,
+        through: { attributes: [] }
+      }]
+    });
+  }
+
   static async getUser(req: Request, res: Response) {
     try {
       const email = req.query.email as string;

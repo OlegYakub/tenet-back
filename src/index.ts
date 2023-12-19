@@ -8,6 +8,7 @@ import corsMiddleware from './middleware/corsMiddleware';
 import UserController from './controllers/userController';
 import configureRoutes from './routes/routes';
 import api from './service/api';
+import { initCronJobs } from "./service/cron";
 
 const PORT = 3000;
 const app = express();
@@ -26,6 +27,7 @@ configureRoutes(app);
 const start = async () => {
     try {
         await connection.checkConnection();
+        initCronJobs();
         app.listen(PORT, () => console.log(`Server started 1 on port ${PORT}`))
     } catch (e) {
         console.log(e)
