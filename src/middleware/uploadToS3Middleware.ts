@@ -40,13 +40,9 @@ export const uploadToS3Middleware = async (req: Request, res: Response, next: Ne
     const data = await client.send(fileToUpload);
     console.log('@@@data uploadToS3Middleware', data);
     req.body.uploadedFilePath = `https://images-test-2.s3.eu-central-1.amazonaws.com/test-image/${fileName}`
-    // process data.
   } catch (error) {
     console.log('@@@error uploadToS3Middleware', error)
-    // error handling.
   } finally {
     next();
   }
-  // next();
-
 }

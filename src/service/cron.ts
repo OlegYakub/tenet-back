@@ -1,13 +1,10 @@
 import cron from 'node-cron';
 import UserController from "../controllers/userController";
+import ImageController from "../controllers/imageController";
 
 export const initCronJobs = () => {
-  const testCronJob = cron.schedule('52-54 * * * *', async () => {
-    const user = await UserController.getUserByEmail('test@test1.com');
-    console.log('user', user);
+  const uploadImageNotificationJob = cron.schedule('26-27 * * * *', async () => {
+    await ImageController.notifyUsers();
   });
-
-  testCronJob.start();
-
-
+  // uploadImageNotificationJob.start();
 }

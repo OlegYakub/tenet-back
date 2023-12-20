@@ -29,11 +29,15 @@ export default function configure(app: Express) {
   app.post(
     api.composeUri('/upload/image'),
     checkJwt,
-    uploadToS3Middleware,
-    // imageUploadMiddleware.single('image'),
+    // uploadToS3Middleware,
+    imageUploadMiddleware.single('image'),
     imageController.upload
   );
-
+  app.post(
+    api.composeUri('/upload-image-notification'),
+    checkJwt,
+    imageController.notifyUsersEndpoint
+  )
   app.get(api.composeUri('/get-user'), checkJwt, UserController.getUser);
   app.post(
     api.composeUri('/update-user'),
