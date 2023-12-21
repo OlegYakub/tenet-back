@@ -24,6 +24,8 @@ passport.use(UserController.getLocalStrategy());
 
 configureRoutes(app);
 
+console.log('process.env.SENDGRID_API_KEY', process.env.SENDGRID_API_KEY);
+
 const start = async () => {
     try {
         await connection.checkConnection();
