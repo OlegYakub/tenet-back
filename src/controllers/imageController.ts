@@ -2,14 +2,14 @@ import { Request, Response } from 'express';
 import sgMail from '@sendgrid/mail';
 import { uploadImageNotificationQueue } from "../service/queue";
 import { User } from "../models/user.model";
-
+import { Image } from "../models/image.model";
 
 class ImageController {
   static async upload(req: Request, res: Response) {
     const user = req.user as User
 
-    // await uploadImageNotificationQueue.add({email: user.email}); // queue functionality
-    // const image = await Image.create({path: req.file.path}); // for local file storage
+    await uploadImageNotificationQueue.add({email: user.email}); // queue functionality
+    const image = await Image.create({path: req.file.path}); // for local file storage
     // const image = await Image.create({path: req.body.uploadedFilePath}); // for S3
     res.send({path: req.file.path});
   }

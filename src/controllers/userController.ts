@@ -12,11 +12,13 @@ class UserController {
 
   static async signUp(req: Request, res: Response) {
     try {
-      const userData = req.body.user;
+      const userData = req.body;
+      console.log('@@@req.body', req.body);
 
       userData.password = await bcrypt.hash(userData.password, 12);
 
       const oldUser = await User.findOne({where: {email: userData.email}});
+      console.log('oldUser', oldUser);
       if (oldUser) {
         api.sendError(res, 404,  'User with this email already exist');
         return;
